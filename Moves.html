@@ -1,0 +1,56 @@
+<html>
+  <style>
+    .bot {
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      position: absolute;
+    }
+    .target {
+      width: 5px;
+      height: 5px;
+      background-color: blue;
+      position: absolute;
+    }
+    .statusText {
+      width: 100px;
+      height: 10px;
+      left: 50%;
+      top: 95%;
+      position: absolute;
+    }
+  </style>
+  <body>
+    <script type="text/javascript" src="./Bot.js"></script>
+    <script type="text/javascript" src="./JobScheduler.js"></script>
+    <script type="text/javascript" src="./RandomTargetGenerator.js"></script>
+    <script type="text/javascript" src="./Room.js"></script>
+    <script type="text/javascript" src="./Target.js"></script>
+    <script type="text/javascript" src="./Ui.js"></script>
+    <script>
+      const roomWidth = document.getElementsByTagName('body')[0].offsetWidth;
+      const roomHeight = document.getElementsByTagName('body')[0].offsetHeight;
+      const room = new Room(roomWidth, roomHeight);
+      const bots = createBots(roomHeight / 10);
+      const ui = new Ui(room);
+      const scheduler = new JobScheduler(room);
+      const targetGenerator = new RandomTargetGenerator(room);
+
+      ui.startRefresh();
+      room.dismissBots();
+      scheduler.startScheduling();
+      targetGenerator.startGeneration();
+
+      function createBots(count) {
+        let bots = [];
+        for (let i = 0; i < count; i++) {
+          let targets = [
+            new Target(0, i * 10)
+          ]
+          bots.push(new Bot(name, 0, 0, room, targets));
+        }
+        return bots;
+      }
+    </script>
+  </body>
+</html>
